@@ -1,0 +1,6 @@
+agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone,agency_fare_url
+2,CTTransit- New Haven,http://www.cttransit.com,America/New_York,en,203-624-0151,
+3,CTTransit- Stamford,http://www.cttransit.com,America/New_York,en,203-327-7433,
+1,CTTransit- Hartford,http://www.cttransit.com,America/New_York,en,860-525-9181,
+4,CTTransit - New Britain,http://www.cttransit.com,America/New_York,en,860-828-0512,
+7,CTTransit - Waterbury-Meriden,http://www.cttransit.com,America/New_York,en,203-753-2538,

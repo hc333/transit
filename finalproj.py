@@ -1,7 +1,9 @@
 import urllib, json
 import matplotlib.pyplot as plt
 import numpy as np
+import geopandas as gpd
 
+#Realtime data
 url = "https://s3.amazonaws.com/cttransit-realtime-prod/vehiclepositions_pb.json"
 response = urllib.request.urlopen(url)
 data = json.loads(response.read())
@@ -11,7 +13,9 @@ locations = np.ones([2,np.shape(data['entity'])[0]])
 for i in range(np.shape(data['entity'])[0]):
     locations[0][i] = data['entity'][i]['vehicle']['position']['latitude']
     locations[1][i] = data['entity'][i]['vehicle']['position']['longitude']
-import geopandas as gpd
+    
+
+#Map creation
 map = gpd.read_file('Trans_RoadSegment.shp')
 fig,ax = plt.subplots(figsize=(10,10))
 map.plot(ax=ax)
@@ -55,6 +59,26 @@ for i in names:
 ax.scatter(locations[1],locations[0],c='red')
 plt.xlim(-72.98,-72.88)
 plt.ylim(41.26,41.355)
+
+import pandas as pd
+stop_times = pd.read_csv('stop_times.txt')
+routes = pd.read_csv('routes.txt')
+stops = pd.read_csv('stops.txt')
+shapes = pd.read_csv('shapes.txt')
+
+class route:
+    def find_route(self, timeID, routeID): #from bus characteristic
+        0
+        #Using the time and the route (from the bus) and cross checking this againt the list in stops and cross checking the GPS coordinates, will be able to find which stop the bus is going to and whether it is late
+
+def determine_bus_lateness():
+    0
+    #to be developed
+    
+#I will make a class using model to determine whether a bus is likely to be late
+#Trying to figure out how to make it automatically update, what to do without historical data, how to figure out which direction
+#Why it's so slow
+
 import time
 class Index:
     def on(self,event):
@@ -66,6 +90,7 @@ class Index:
             locations[0][i] = data['entity'][i]['vehicle']['position']['latitude']
             locations[1][i] = data['entity'][i]['vehicle']['position']['longitude']
         ax.scatter(locations[1],locations[0],c='red')
+        fig.canvas.draw()
 
 
 #     def on(self, event):
@@ -86,7 +111,8 @@ class Index:
 #     def off(self,event):
 #         0
             
- 
+ #Class for bus stop and it's latenesss
+#how to tell if it's late or early?
 callback = Index()
 axnext = plt.axes([0.81, 0.05, 0.1, 0.075])
 bnext = Button(axnext, 'On')

@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from PIL import Image
+from matplotlib.widgets import Button
+
 
 url = "https://s3.amazonaws.com/cttransit-realtime-prod/vehiclepositions_pb.json"
 response = urllib.request.urlopen(url)
@@ -22,25 +24,22 @@ for i in range(0,4):
         speeds[0][i] = 0
         
 fig, axs = fig, axs = plt.subplots(2, 2, figsize=(6, 6))
-# img = mpimg.imread('bus.JPG')
- 
+
 img = Image.open("bus.JPG")
  
-#im = im.rotate(180)
+
 counter=0
 for i in range(0,2):
     for j in range(0,2):
         width, height = img.size
-   #     newsize = (width+(speeds[counter]*5), height+(speeds[counter]*5))
-        newsize = (int(width*speeds[0][counter])+1,int(height*speeds[0][counter])+1)
+        #im = im.rotate(180) - going to add direction
+        newsize = (int(width*5*speeds[0][counter])+1,int(height*5*speeds[0][counter])+1)
         img1 = img.resize(newsize)
         axs[i, j].imshow(img1)
         axs[i, j].imshow(img1)
         axs[i, j].imshow(img1)
         axs[i, j].imshow(img1)
         counter = counter+1
-
-from matplotlib.widgets import Button
 
 
 button1 = plt.axes([0.8, .9, 0.1, 0.075])
@@ -62,13 +61,7 @@ for i in range(0,4):
         names[i] = plt.axes([xs[i], heights[i], 0.1, 0.075])
         names1[i] = Button(names[i], 'No speed currently')
 
-        
-    
 
-
+     
 
 plt.show()
-
-# imgplot = plt.imshow(img)
-# bus1 = plt.axes([0.1, 0.05, 0.1, 0.075])
-# bus2 = plt.axes([0.2, 0.05, 0.1, 0.075])

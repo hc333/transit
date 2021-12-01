@@ -3,6 +3,7 @@
 #How to make the buses disappear each time we update
 #Is this project enough???
 #Talk through the algorithm I'm working on (which isn't fully working yet)
+#git push question
 
 import urllib, json
 import matplotlib.pyplot as plt
@@ -13,6 +14,7 @@ from matplotlib.widgets import TextBox
 import pandas as pd
 import time 
 from PIL import Image
+import datetime
 
 shapes = pd.read_csv('shapes.txt')
 trips = pd.read_csv('trips.txt')
@@ -65,7 +67,12 @@ def update_buses():
 def draw_bus_locations(fig,ax,buses):
     for i in buses:
         ax.scatter(i.lon,i.lat,c='red')
-    #fig.canvas.draw()
+    #From Imad: updating plots:
+    #     lons array
+    #     lats array
+    #line = ax.plot(x,y) -> use plot not scatter
+    #line.set_data(x,y) -> when updating the map
+    #fig.canvas.draw() ->underneath set data
 
 class Index:
     def refresh(self,event):
@@ -129,23 +136,23 @@ def bus_speed_image(busid, buses, fig, ax):
 
 def determine_direction(bearing):
     if bearing>0 and bearing<22.5:
-        return 'N'
-    elif bearing<(67.5):
-        return 'NE'
-    elif bearing<112.5:
         return 'E'
-    elif bearing<157.5:
+    elif bearing<(67.5):
         return 'SE'
-    elif bearing<202.5:
+    elif bearing<112.5:
         return 'S'
-    elif bearing<247.5:
+    elif bearing<157.5:
         return 'SW'
-    elif bearing<292.5:
+    elif bearing<202.5:
         return 'W'
-    elif bearing<337.5:
+    elif bearing<247.5:
         return 'NW'
-    else:
+    elif bearing<292.5:
         return 'N'
+    elif bearing<337.5:
+        return 'NE'
+    else:
+        return 'E'
     
 def next_stop_in_shape(bus): #In the shape
     route_id = bus.route_id
@@ -186,20 +193,31 @@ def next_stop_in_shape(bus): #In the shape
 def distance(lat1,lon1,lat2,lon2):
     return np.sqrt((lat1-lat2)**2 + (lon1-lon2)**2)
 
+#Function under construction
+def stops_within_5_minutes(bus):
+    trip_id = bus.trip_id
+    minutes = datetime.timedelta(minutes=5)
+    t = datetime.datetime.today()
+    before = t-minutes
+    after = t+minutes
+    nums = stop_times.loc[stop_times['trip_id']==int(trip_id)]
+    next_stops = nums[(nums['arrival_time']<str(after)[11:19])& (nums['arrival_time']>str(before)[11:19])]
+    return next_stops['stop_id']
+
 def closest_stop(bus):
     lat = bus.lat
     lon = bus.lon
     trip_id = bus.trip_id
     trip_id = int(trip_id)
     stops_available = stop_times.loc[stop_times['trip_id']==trip_id]['stop_id']
-   
+    nearby_stops = stops_within_5_minutes(bus)
+    stops_available = stops_available.loc[stops_available.isin(nearby_stops)]
     #Next part: only make possibilities stops within ~20 minutes of schedule
-    
+    stops_available = [str(i) for i in stops_available]
     stop_lats = stops.loc[stops['stop_id'].isin(stops_available)]['stop_lat']
     stop_lons = stops.loc[stops['stop_id'].isin(stops_available)]['stop_lon']
     stop_names = stops.loc[stops['stop_id'].isin(stops_available)]['stop_name']
     stop_ids = stops.loc[stops['stop_id'].isin(stops_available)]['stop_id']
-    
     min_dist = 10000000
     name = ''
     stop_id = ''
@@ -209,6 +227,7 @@ def closest_stop(bus):
             min_dist = d
             name = k
             stop_id = l
+    print(min_dist)
     return min_dist, name, stop_id
     
 def return_next_stop_given_stop(stop_id,trip_id):
@@ -219,14 +238,16 @@ def return_next_stop_given_stop(stop_id,trip_id):
     return next_stop['stop_id']
 
 def from_stop_id_give_stop_name(stop_id):
-    stop = df.loc[(stops['stop_id']==stop_id)]
+    stop = stops.loc[(stops['stop_id']==stop_id)]
     return stop['stop_name']
 
-def which_stop_is_next(bus):
+def which_stop_is_next(buses,bus_id):
+    bus = buses[bus_id]
     trip_id = bus.trip_id
     min_dist1,name1,stop_id1 = closest_stop(bus)
     time.sleep(3)
-    update_buses()
+    buses = update_buses()
+    bus = buses[bus_id]
     min_dist2,name2,stop_id2 = closest_stop(bus)
     if name1==name2:
         if min_dist1<min_dist2:
@@ -251,7 +272,7 @@ btextbox.on_submit(func)
         
 draw_bus_locations(fig,ax,buses)
 
-print(which_stop_is_next(buses[5]))
+print(which_stop_is_next(buses,5))
 print('hi')
 
 #Demonstration of plotting bus and route from ID

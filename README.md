@@ -8,7 +8,7 @@ The app is primarily run through the file app.py, with some help from functions.
 
 The code also makes use of txt files and realtime bus location data from the CTTransit website. You can find out more here: https://www.cttransit.com/about/developers
 
-Features of the appinclude...
+Features of the app include...
 
 -A map displaying the latitude and longitude of the current running CTTransit buses
 
@@ -28,6 +28,7 @@ An in the sidebar you'll find:
 
 -A visual demonstrating the speed and direction of a bus
 
-And in the Learn about Transit Jupyter Notebook, you can view an earlier iteration of the app run through matplotlib.
+
+In the 'Learn about TRANSIT' Jupyter Notebook, you can view an earlier iteration of the app run through matplotlib.
 
 Thanks for viewing!

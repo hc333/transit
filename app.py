@@ -113,7 +113,7 @@ else:
 
 ########################  Emphasize a bus button ########################  
     
-num4 = st.sidebar.text_input('Enter the bus number to emphasize it on the map',value=40)
+num4 = st.sidebar.text_input('Enter the bus number and press the Emphasize Bus button to emphasize it on the map',value=40)
 
 def make_emphasis_layer(buses,num4):
     d_emphasize = make_bus_into_dataframe(buses,int(num4))
@@ -138,7 +138,7 @@ else:
 
 ########################  Emphasize a stop button ########################  
 
-num41 = st.sidebar.text_input('Enter a stop name to see it on the map',value='Elm St and Temple St')
+num41 = st.sidebar.text_input('Enter a stop name and press the See Stop button to see it on the map',value='Elm St and Temple St')
 
 def make_stop_emphasis_layer(buses,num41,stops):
     stop_name = num41

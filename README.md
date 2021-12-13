@@ -4,6 +4,8 @@ Welcome to TRANSIT: an app that tracks the CTTransit buses in Connecticut, a pro
 
 The main app is run through Streamlit at the following link: https://share.streamlit.io/hc333/transit/main/app.py
 
+Currently the web app is under construction, but the app can still be run from a local machine.
+
 The app is primarily run through the file app.py, with some help from functions.py.
 
 The code also makes use of txt files and realtime bus location data from the CTTransit website. You can find out more here: https://www.cttransit.com/about/developers

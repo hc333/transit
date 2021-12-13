@@ -28,7 +28,7 @@ if 'green' not in st.session_state:
 if 'emph' not in st.session_state:
     st.session_state['emph'] = False
 if 'emphstop' not in st.session_state:
-    st.session_state['emphstop']=True
+    st.session_state['emphstop'] = False
 
 ########################  Headers and information ########################  
 st.title('TRANSIT: A New Haven Bus Map')

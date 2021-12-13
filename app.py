@@ -299,7 +299,7 @@ if st.button('Display'):
 else:
     print('waiting')
 
-########################  Celebrate! ########################  
+########################  Celebrate! ########################$ 
 if st.button('Celebrate'):
     st.balloons()
 else:

@@ -89,9 +89,12 @@ def given_bus_next_stop(stop_times,stops,bus,demo):
 
 ########################Used for the Streamlit next scheduled stop button########################
 def func(expr,buses,stop_times,stops,demo):
-    bus = buses[int(expr)]
-    my_string = str(given_bus_next_stop(stop_times,stops,bus,demo))
-    return my_string.split("Name:")[0]
+    try:
+        bus = buses[int(expr)]
+        my_string = str(given_bus_next_stop(stop_times,stops,bus,demo))
+        return my_string.split("Name:")[0]
+    except:
+        return 'not available. This bus is currently offline'
 
 ########################Used to rotate the image########################
 def determine_direction(bearing):
@@ -116,13 +119,16 @@ def determine_direction(bearing):
     
 ########################The image showing bus speed and direction########################    
 def bus_speed_image(busid, buses, fig, ax):
-    bearing = buses[busid].bearing
-    img = Image.open("bus.JPG")
-    img = img.rotate(bearing)
-    imgplot = plt.imshow(img)
-    speed = round(buses[busid].speed,2)
-    direction = determine_direction(bearing)
-    return fig,ax,direction,speed
+    try:
+        bearing = buses[busid].bearing
+        img = Image.open("bus.JPG")
+        img = img.rotate(bearing)
+        imgplot = plt.imshow(img)
+        speed = round(buses[busid].speed,2)
+        direction = determine_direction(bearing)
+        return fig,ax,direction,speed
+    except:
+        return fig,ax,'N',0.0
     #Used for matplotlib app"
     #  plt.text(.05,.8,'The bus is going in the direction %s at %f mph' % (direction, speed) )
 
@@ -191,21 +197,24 @@ def from_stop_id_give_stop_name(stop_id):
 
 ########################Gives you which stop the bus is actually near given its current location########################
 def which_stop_is_next(buses,bus_id,stops,stop_times,demo):
-    bus = buses[bus_id]
-    trip_id = bus.trip_id
-    min_dist1,name1,stop_id1 = closest_stop(bus,stops,stop_times)
-    time.sleep(3)
-    buses = update_buses(demo)
-    bus = buses[bus_id]
-    min_dist2,name2,stop_id2 = closest_stop(bus,stops,stop_times)
-    if name1==name2:
-        if min_dist1<min_dist2:
-            final_name = from_stop_id_give_stop_name(return_next_stop_given_stop(stop_id1,trip_id,stop_times))
+    try:
+        bus = buses[bus_id]
+        trip_id = bus.trip_id
+        min_dist1,name1,stop_id1 = closest_stop(bus,stops,stop_times)
+        time.sleep(3)
+        buses = update_buses(demo)
+        bus = buses[bus_id]
+        min_dist2,name2,stop_id2 = closest_stop(bus,stops,stop_times)
+        if name1==name2:
+            if min_dist1<min_dist2:
+                final_name = from_stop_id_give_stop_name(return_next_stop_given_stop(stop_id1,trip_id,stop_times))
+            else:
+                final_name = name1
         else:
-            final_name = name1
-    else:
-        final_name = name2
-    return final_name
+            final_name = name2
+        return final_name
+    except:
+        return 'unavailable. This bus is currently offline.'
 
 ########################If I had more time, I would create a function called how late is the bus########################
 

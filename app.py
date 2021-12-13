@@ -138,7 +138,7 @@ else:
 
 ########################  Emphasize a stop button ########################  
 
-num41 = st.sidebar.text_input('Enter a stop name to see it on the map',value=40)
+num41 = st.sidebar.text_input('Enter a stop name to see it on the map',value='Elm St and Temple St')
 
 def make_stop_emphasis_layer(buses,num41,stops):
     stop_name = num41
@@ -268,7 +268,7 @@ st.sidebar.write('The next stop is', func(num,buses,stop_times,stops,demo))
 
 ########################  Enter bus number to find the stop it's closest to ########################  
 num1 = st.sidebar.text_input('Enter the bus number to find out which stop it is currently closest to',value=40)
-st.sidebar.write('It is closest to the stop', which_stop_is_next(buses,int(num1),stops,stop_times,demo))
+st.sidebar.write('The closest stop is', which_stop_is_next(buses,int(num1),stops,stop_times,demo))
 
 ########################  Enter bus number to see a visual of its speed and direction ########################  
 num2 = st.sidebar.text_input('Enter the bus number to find out how fast it is going',value=40)

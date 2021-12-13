@@ -7,8 +7,11 @@ The main app is run through Streamlit at the following link: https://share.strea
 Features include...
 
 In the main body:
+
 -A map displaying the latitude and longitude of the current running CTTransit buses
+
 -A table showing the names and neighborhoods of the running CTTransit buses in New Haven
+
 -A textbar to show the schedule of whichever CTTransit bus you wish
 
 In the sidebar:
@@ -22,3 +25,7 @@ In the sidebar:
 -A textbox to find out which stop a bus is actually approaching next
 
 -A visual demonstrating the speed and direction of a bus
+
+And in the Learn about Transit Jupyter Notebook, you can view an earlier iteration of the app run through matplotlib.
+
+Thanks for viewing!

@@ -4,9 +4,11 @@ Welcome to TRANSIT: an app that tracks the CTTransit buses in Connecticut, a pro
 
 The main app is run through Streamlit at the following link: https://share.streamlit.io/hc333/transit/main/app.py
 
-Features include...
+The app is primarily run through the file app.py, with some help from functions.py.
 
-In the main body:
+The code also makes use of txt files and realtime bus location data from the CTTransit website. You can find out more here: https://www.cttransit.com/about/developers
+
+Features of the appinclude...
 
 -A map displaying the latitude and longitude of the current running CTTransit buses
 
@@ -14,7 +16,7 @@ In the main body:
 
 -A textbar to show the schedule of whichever CTTransit bus you wish
 
-In the sidebar:
+An in the sidebar you'll find:
 
 -A button to show a particular bus on the map
 

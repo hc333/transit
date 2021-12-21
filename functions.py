@@ -13,14 +13,22 @@ from PIL import Image
 import datetime
 import streamlit as st
 import pydeck as pdk
+from asdf import AsdfFile
+import asdf
 
 ########################Importing files that came from CTTransit########################
 shapes = pd.read_csv('shapes.txt')
 trips = pd.read_csv('trips.txt')
-stop_times = pd.read_csv('stop_times.txt')
 trips = pd.read_csv('trips.txt')
 stops = pd.read_csv('stops.txt')
 fig,ax = plt.subplots(figsize=(10,10))
+
+af = asdf.open('stop_times_asdf.asdf')
+my_list = af.tree['array']
+n_split = my_list.split('\n')
+n_split_comma = [sub.split(',') for sub in n_split]
+stop_times = pd.DataFrame(data=n_split_comma)
+#stop_times = pd.read_csv('stop_times.txt')
 
 ########################The bus class: crucial for tracking buses########################
 class bus():

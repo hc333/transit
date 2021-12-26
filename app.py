@@ -30,7 +30,7 @@ if 'emph' not in st.session_state:
 if 'emphstop' not in st.session_state:
     st.session_state['emphstop'] = False
 
-########################  Headers and information ########################  
+########################  Headers and information ########################
 st.title('TRANSIT: A New Haven Bus Map')
 st.subheader('Here you can track the buses in New Haven and use our interactive features.')
 st.write('Note: this app runs on real time data from CTTransit. If buses are not currently running, check the box below to see a demo.')
@@ -263,7 +263,7 @@ if st.session_state.green and st.session_state.emph and st.session_state.emphsto
 buses = update_buses(demo)
 
 ########################  Enter bus number to find next scheduled stop ########################  
-num = st.sidebar.text_input('Enter the bus number to find out its next schdeduled stop',value=40)
+num = st.sidebar.text_input('Enter the bus number to find out its next scheduled stop',value=40)
 st.sidebar.write('The next stop is', func(num,buses,stop_times,stops,demo))
 
 ########################  Enter bus number to find the stop it's closest to ########################  

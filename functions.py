@@ -28,6 +28,7 @@ my_list = af.tree['array']
 n_split = my_list.split('\n')
 n_split_comma = [sub.split(',') for sub in n_split]
 stop_times = pd.DataFrame(data=n_split_comma)
+stop_times.columns = n_split[0].split(',')
 #stop_times = pd.read_csv('stop_times.txt')
 
 ########################The bus class: crucial for tracking buses########################
@@ -42,6 +43,8 @@ class bus():
         self.vehicleid = new_data['entity'][number]['vehicle']['vehicle']['id']
         self.trip_id = new_data['entity'][number]['vehicle']['trip']['trip_id']
         self.route_id = new_data['entity'][number]['vehicle']['trip']['route_id']
+        self.trip_name = str(trips[trips['trip_id']==int(self.trip_id)]['trip_headsign']).split("Name:")[0].split(' ',1)[1]  
+        self.bus_number = self.trip_name.split(' ')[3]        
         try:
             self.speed = new_data['entity'][number]['vehicle']['position']['speed']
         except:
@@ -74,9 +77,9 @@ def given_bus_next_stop(stop_times,stops,bus,demo):
         t = '18:57:33'
     else:
         t = time.localtime()
-    
-    trip_id = int(bus.trip_id)
-    nums = stop_times.loc[stop_times['trip_id']==trip_id]     
+    #asdf change trip_id = int(bus.trip_id)
+    trip_id = str(bus.trip_id)
+    nums = stop_times.loc[stop_times['trip_id']==trip_id]
     if demo==True:
         next_stops = nums[(nums['arrival_time']>t)]
     else:
@@ -147,11 +150,13 @@ def distance(lat1,lon1,lat2,lon2):
 ########################Find the stops within a 5 minute window or where the bus ought to be according to schedule######################## 
 def stops_within_5_minutes(bus):
     trip_id = bus.trip_id
+    #asdf change trip_id = int(trip_id)
+    trip_id = str(trip_id)
     minutes = datetime.timedelta(minutes=5)
     t = datetime.datetime.today()
     before = t-minutes
     after = t+minutes
-    nums = stop_times.loc[stop_times['trip_id']==int(trip_id)]
+    nums = stop_times.loc[stop_times['trip_id']==trip_id]
     next_stops = nums[(nums['arrival_time']<str(after)[11:19])& (nums['arrival_time']>str(before)[11:19])]
     return next_stops['stop_id']
 
@@ -160,7 +165,8 @@ def closest_stop(bus,stops,stop_times):
     lat = bus.lat
     lon = bus.lon
     trip_id = bus.trip_id
-    trip_id = int(trip_id)
+    #asdf change trip_id = int(trip_id)
+    trip_id = str(trip_id)
     stops_available = stop_times.loc[stop_times['trip_id']==trip_id]['stop_id']
     nearby_stops = stops_within_5_minutes(bus)
     stops_available = stops_available.loc[stops_available.isin(nearby_stops)]
@@ -185,6 +191,10 @@ def closest_stop(bus,stops,stop_times):
 
 ########################Returns the next stop given the current stop########################
 def return_next_stop_given_stop(stop_id,trip_id,stop_times):
+    #asdf change
+    trip_id = str(trip_id)
+    stop_id = str(stop_id)
+    
     stop = stop_times.loc[(stop_times['stop_id']==stop_id) & (stop_times['trip_id']==trip_id)]
     stop_sequence = stop['stop_sequence']
     for i in stop_sequence:
@@ -208,6 +218,9 @@ def which_stop_is_next(buses,bus_id,stops,stop_times,demo):
     try:
         bus = buses[bus_id]
         trip_id = bus.trip_id
+        #asdf change
+        trip_id = str(trip_id)
+        st.write(trip_id)
         min_dist1,name1,stop_id1 = closest_stop(bus,stops,stop_times)
         time.sleep(3)
         buses = update_buses(demo)
@@ -323,12 +336,17 @@ def make_buses_into_dataframe(buses):
             downtown.append('No')
         i.town = town
         towns.append(town)        
-    trip_names = [str(trips[trips['trip_id']==int(i)]['trip_headsign']).split("Name:")[0].split(' ',1)[1] for i in trip_ids]      
+    trip_names = [str(trips[trips['trip_id']==int(i)]['trip_headsign']).split("Name:")[0].split(' ',1)[1] for i in trip_ids]  
+    bus_numbers = []
+    for i in trip_names:
+        number = i.split(' ')[3]
+        bus_numbers.append(number)
     data['Neighborhood'] = neighborhoods
     data['Town'] = towns
     data['latitude'] = lats
     data['longitude'] = lons
     data['trip_id'] = trip_ids
+    data['Bus Number'] = bus_numbers
     data['trip_names'] = trip_names
     data['Downtown?'] = downtown
     return data[data['Town']=='New Haven']
